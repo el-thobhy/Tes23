@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Kalkulator Usia 23 Tahun Tetap</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    label, input {
+      font-size: 16px;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Kalkulator Usia 23 Tahun Tetap</h1>
+
+  <label for="birthdate">Tanggal Lahir:</label>
+  <input type="date" id="birthdate" value="1999-06-23">
+  <button onclick="hitungUsia()">Hitung Usia</button>
+
+  <div class="result" id="hasil"></div>
+
+  <script>
+    function hitungUsia() {
+      const birthDate = new Date(document.getElementById("birthdate").value);
+      const today = new Date();
+
+      let tahun = today.getFullYear() - birthDate.getFullYear();
+      let bulan = today.getMonth() - birthDate.getMonth();
+      let hari = today.getDate() - birthDate.getDate();
+
+      if (hari < 0) {
+        bulan -= 1;
+        hari += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+      }
+
+      if (bulan < 0) {
+        tahun -= 1;
+        bulan += 12;
+      }
+
+      // Kurangi 23 tahun
+      let bulanSetelah23 = (tahun - 23) * 12 + bulan;
+
+      const hasil = document.getElementById("hasil");
+      if (tahun < 23) {
+        hasil.innerText = "Kamu belum mencapai usia 23 tahun.";
+      } else {
+        hasil.innerText = `Usiamu adalah: 23 tahun + ${bulanSetelah23} bulan ${hari} hari`;
+      }
+    }
+  </script>
+</body>
+</html>
