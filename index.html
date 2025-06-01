@@ -3,30 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <title>Kalkulator Usia 23 Tahun Tetap</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 20px;
-      background-color: #f9f9f9;
-    }
-    label, input {
-      font-size: 16px;
-    }
-    .result {
-      margin-top: 20px;
-      font-size: 18px;
-      font-weight: bold;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-  <h1>Kalkulator Usia 23 Tahun Tetap</h1>
+<body class="bg-light">
 
-  <label for="birthdate">Tanggal Lahir:</label>
-  <input type="date" id="birthdate" value="1999-06-23">
-  <button onclick="hitungUsia()">Hitung Usia</button>
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
 
-  <div class="result" id="hasil"></div>
+        <div class="card shadow rounded-4">
+          <div class="card-body">
+            <h3 class="card-title text-center mb-4">Kalkulator Usia 23 Tahun Tetap</h3>
+
+            <div class="mb-3">
+              <label for="birthdate" class="form-label">Tanggal Lahir</label>
+              <input type="date" id="birthdate" class="form-control" value="1999-06-23">
+            </div>
+
+            <div class="d-grid">
+              <button onclick="hitungUsia()" class="btn btn-primary">Hitung Usia</button>
+            </div>
+
+            <div class="alert alert-info mt-4 d-none" id="hasil"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS (optional) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
     function hitungUsia() {
@@ -47,16 +56,20 @@
         bulan += 12;
       }
 
-      // Kurangi 23 tahun
-      let bulanSetelah23 = (tahun - 23) * 12 + bulan;
+      let hasilDiv = document.getElementById("hasil");
 
-      const hasil = document.getElementById("hasil");
       if (tahun < 23) {
-        hasil.innerText = "Kamu belum mencapai usia 23 tahun.";
+        hasilDiv.classList.remove("d-none", "alert-info");
+        hasilDiv.classList.add("alert-warning");
+        hasilDiv.innerText = "Kamu belum mencapai usia 23 tahun.";
       } else {
-        hasil.innerText = `Usiamu adalah: 23 tahun + ${bulanSetelah23} bulan ${hari} hari`;
+        let bulanSetelah23 = (tahun - 23) * 12 + bulan;
+        hasilDiv.classList.remove("d-none", "alert-warning");
+        hasilDiv.classList.add("alert-info");
+        hasilDiv.innerText = `Usiamu adalah: 23 tahun + ${bulanSetelah23} bulan ${hari} hari.`;
       }
     }
   </script>
+
 </body>
 </html>
