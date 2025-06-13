@@ -38,36 +38,47 @@
 </div>
 
 <script>
+  function hitungSelisihTanggalMulai(dari, ke) {
+    let tahun = ke.getFullYear() - dari.getFullYear();
+    let bulan = ke.getMonth() - dari.getMonth();
+    let hari = ke.getDate() - dari.getDate();
+
+    if (hari < 0) {
+      bulan -= 1;
+      // Ambil jumlah hari di bulan sebelumnya
+      let prevMonth = new Date(ke.getFullYear(), ke.getMonth(), 0).getDate();
+      hari += prevMonth;
+    }
+
+    if (bulan < 0) {
+      tahun -= 1;
+      bulan += 12;
+    }
+
+    return { tahun, bulan, hari };
+  }
+
   function hitungUsiaTetap(fixTahun, birthDate, today, elementId) {
     const hasil = document.getElementById(elementId);
 
-    // Copy tanggal lahir dan tambahkan fixTahun
-    const targetTanggal = new Date(birthDate);
+    let targetTanggal = new Date(birthDate);
     targetTanggal.setFullYear(birthDate.getFullYear() + fixTahun);
 
     if (today >= targetTanggal) {
-      // Sudah melewati usia fixTahun
-      let selisihMs = today - targetTanggal;
-      let selisihHari = Math.floor(selisihMs / (1000 * 60 * 60 * 24));
-
-      // Hitung bulan dan hari kira-kira
-      let bulan = Math.floor(selisihHari / 30);
-      let hari = selisihHari % 30;
-
+      let selisih = hitungSelisihTanggalMulai(targetTanggal, today);
       hasil.className = "alert alert-info";
-      hasil.innerText = `Usiamu tetap ${fixTahun} tahun + ${bulan} bulan ${hari} hari.`;
+      hasil.innerText = `Usiamu tetap ${fixTahun} tahun + ${selisih.bulan} bulan ${selisih.hari} hari.`;
     } else {
-      // Belum mencapai usia fixTahun
-      let selisihMs = targetTanggal - today;
-      let selisihHari = Math.ceil(selisihMs / (1000 * 60 * 60 * 24));
+      let selisih = hitungSelisihTanggalMulai(today, targetTanggal);
 
-      let bulan = Math.floor(selisihHari / 30);
-      let hari = selisihHari % 30;
+      if (selisih.tahun > 0) {
+        selisih.bulan += selisih.tahun * 12;
+      }
 
-      if (bulan === 0) {
-        hasil.innerText = `Kurang ${hari} hari lagi untuk mencapai ${fixTahun} tahun.`;
+      if (selisih.bulan === 0) {
+        hasil.innerText = `Kurang ${selisih.hari} hari lagi untuk mencapai ${fixTahun} tahun.`;
       } else {
-        hasil.innerText = `Kurang ${bulan} bulan ${hari} hari lagi untuk mencapai ${fixTahun} tahun.`;
+        hasil.innerText = `Kurang ${selisih.bulan} bulan ${selisih.hari} hari lagi untuk mencapai ${fixTahun} tahun.`;
       }
       hasil.className = "alert alert-warning";
     }
