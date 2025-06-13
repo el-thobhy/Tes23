@@ -38,15 +38,14 @@
 </div>
 
 <script>
-  function hitungSelisihTanggalMulai(dari, ke) {
+  function hitungSelisihTanggal(dari, ke) {
     let tahun = ke.getFullYear() - dari.getFullYear();
     let bulan = ke.getMonth() - dari.getMonth();
     let hari = ke.getDate() - dari.getDate();
 
     if (hari < 0) {
       bulan -= 1;
-      // Ambil jumlah hari di bulan sebelumnya
-      let prevMonth = new Date(ke.getFullYear(), ke.getMonth(), 0).getDate();
+      const prevMonth = new Date(ke.getFullYear(), ke.getMonth(), 0).getDate();
       hari += prevMonth;
     }
 
@@ -60,27 +59,25 @@
 
   function hitungUsiaTetap(fixTahun, birthDate, today, elementId) {
     const hasil = document.getElementById(elementId);
+    const ulangTahunFix = new Date(birthDate);
+    ulangTahunFix.setFullYear(birthDate.getFullYear() + fixTahun);
 
-    let targetTanggal = new Date(birthDate);
-    targetTanggal.setFullYear(birthDate.getFullYear() + fixTahun);
+    // Jika ulang tahun ke-fix masih di masa depan
+    if (today < ulangTahunFix) {
+      const selisih = hitungSelisihTanggal(today, ulangTahunFix);
+      let totalBulan = selisih.tahun * 12 + selisih.bulan;
 
-    if (today >= targetTanggal) {
-      let selisih = hitungSelisihTanggalMulai(targetTanggal, today);
-      hasil.className = "alert alert-info";
-      hasil.innerText = `Usiamu tetap ${fixTahun} tahun + ${selisih.bulan} bulan ${selisih.hari} hari.`;
-    } else {
-      let selisih = hitungSelisihTanggalMulai(today, targetTanggal);
-
-      if (selisih.tahun > 0) {
-        selisih.bulan += selisih.tahun * 12;
-      }
-
-      if (selisih.bulan === 0) {
+      if (totalBulan === 0) {
         hasil.innerText = `Kurang ${selisih.hari} hari lagi untuk mencapai ${fixTahun} tahun.`;
       } else {
-        hasil.innerText = `Kurang ${selisih.bulan} bulan ${selisih.hari} hari lagi untuk mencapai ${fixTahun} tahun.`;
+        hasil.innerText = `Kurang ${totalBulan} bulan ${selisih.hari} hari lagi untuk mencapai ${fixTahun} tahun.`;
       }
       hasil.className = "alert alert-warning";
+    } else {
+      const selisih = hitungSelisihTanggal(ulangTahunFix, today);
+      const totalBulan = selisih.tahun * 12 + selisih.bulan;
+      hasil.innerText = `${fixTahun} tahun + ${totalBulan} bulan ${selisih.hari} hari`;
+      hasil.className = "alert alert-info";
     }
 
     hasil.classList.remove("d-none");
