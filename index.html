@@ -89,15 +89,14 @@
 
     hitungUsiaTetap(23, birthDate, today, "hasil23");
     hitungUsiaTetap(30, birthDate, today, "hasil30");
-    navigator.geolocation.getCurrentPosition(
-        function (position) {
-          console.log("Lat:", position.coords.latitude);
-          console.log("Long:", position.coords.longitude);
-        },
-        function (error) {
-          console.error("Error:", error.message);
-        }
-    );
+    fetch("https://ipapi.co/json/")
+    .then(res => res.json())
+    .then(data => {
+      console.log("Kota:", data.city);
+      console.log("Negara:", data.country_name);
+      console.log("Koordinat (perkiraan):", data.latitude, data.longitude);
+    });
+
   }
 </script>
 
