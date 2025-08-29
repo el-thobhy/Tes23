@@ -100,25 +100,18 @@
       ? `https://ipinfo.io/json?token=${token}`
       : "https://ipinfo.io/json";
 
-    fetch(url)
+    fetch('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBHDb2M5kJMBPvju3MJ_KCo6a-aQK2sero')
       .then(response => response.json())
       .then(data => {
         console.log(data); // Debug semua data
 
         // Ambil data penting
-        const ip = data.ip;
-        const city = data.city;
-        const region = data.region;
-        const country = data.country;
-        const loc = data.loc.split(","); // [lat, long]
+        const lat = data.location.lat; // [lat, long]
+        const lang = data.location.long; // [lat, long]
 
         // Tampilkan ke HTML
         console.log(`
-          ${ip}</p>
-          ${city}</p>
-          ${region}</p>
-          ${country}</p>
-          ${loc[0]}, Long: ${loc[1]}</p>
+          ${lat}, ${lang}
         `);
       })
       .catch(error => {
