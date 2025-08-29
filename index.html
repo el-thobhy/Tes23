@@ -89,15 +89,42 @@
 
     hitungUsiaTetap(23, birthDate, today, "hasil23");
     hitungUsiaTetap(30, birthDate, today, "hasil30");
-    fetch("https://ipapi.co/json/")
-    .then(res => res.json())
-    .then(data => {
-      console.log("Kota:", data.city);
-      console.log("Negara:", data.country_name);
-      console.log("Koordinat (perkiraan):", data.latitude, data.longitude);
-    });
 
   }
+
+  // Pakai token gratis dari ipinfo (opsional, tapi disarankan)
+    const token = "fd5210ae9c141b"; // contoh: 1234567890abcdef
+
+    // API endpoint ipinfo
+    const url = token
+      ? `https://ipinfo.io/json?token=${token}`
+      : "https://ipinfo.io/json";
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data); // Debug semua data
+
+        // Ambil data penting
+        const ip = data.ip;
+        const city = data.city;
+        const region = data.region;
+        const country = data.country;
+        const loc = data.loc.split(","); // [lat, long]
+
+        // Tampilkan ke HTML
+        document.getElementById("location").innerHTML = `
+          <p><strong>IP:</strong> ${ip}</p>
+          <p><strong>Kota:</strong> ${city}</p>
+          <p><strong>Provinsi:</strong> ${region}</p>
+          <p><strong>Negara:</strong> ${country}</p>
+          <p><strong>Koordinat:</strong> Lat: ${loc[0]}, Long: ${loc[1]}</p>
+        `;
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        document.getElementById("location").innerText = "Gagal mengambil lokasi.";
+      });
 </script>
 
 </body>
