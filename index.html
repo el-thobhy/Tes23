@@ -92,32 +92,27 @@
 
   }
 
-  // Pakai token gratis dari ipinfo (opsional, tapi disarankan)
-    const token = "fd5210ae9c141b"; // contoh: 1234567890abcdef
+   async function getLocation() {
+      const apiKey = "AIzaSyBHDb2M5kJMBPvju3MJ_KCo6a-aQK2sero"; // Ganti dengan API key Google kamu
+      const url = `https://www.googleapis.com/geolocation/v1/geolocate?key=${apiKey}`;
 
-    // API endpoint ipinfo
-    const url = token
-      ? `https://ipinfo.io/json?token=${token}`
-      : "https://ipinfo.io/json";
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({}) // bisa dikirim data WiFi/Cell tower, kalau kosong pakai IP
+        });
 
-    fetch('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBHDb2M5kJMBPvju3MJ_KCo6a-aQK2sero')
-      .then(response => response.json())
-      .then(data => {
-        console.log(data); // Debug semua data
+        const data = await response.json();
+        console.log(data);
 
-        // Ambil data penting
-        const lat = data.location.lat; // [lat, long]
-        const lang = data.location.long; // [lat, long]
-
-        // Tampilkan ke HTML
-        console.log(`
-          ${lat}, ${lang}
-        `);
-      })
-      .catch(error => {
+      
+      } catch (error) {
         console.error("Error:", error);
-        document.getElementById("location").innerText = "Gagal mengambil lokasi.";
-      });
+      }
+    }
+
+    getLocation();
 </script>
 
 </body>
