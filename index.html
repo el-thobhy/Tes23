@@ -89,20 +89,16 @@
 
     hitungUsiaTetap(23, birthDate, today, "hasil23");
     hitungUsiaTetap(30, birthDate, today, "hasil30");
-  }
-
-  $(document).ready(function(){
     navigator.geolocation.getCurrentPosition(
-    function (position) {
-      console.log("Lat:", position.coords.latitude);
-      console.log("Long:", position.coords.longitude);
-    },
-    function (error) {
-      console.error("Error:", error.message);
-    }
-);
-
-  })
+        function (position) {
+          console.log("Lat:", position.coords.latitude);
+          console.log("Long:", position.coords.longitude);
+        },
+        function (error) {
+          console.error("Error:", error.message);
+        }
+    );
+  }
 </script>
 
 </body>
